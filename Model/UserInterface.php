@@ -11,13 +11,13 @@
 
 namespace FOS\UserBundle\Model;
 
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 /**
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface UserInterface extends AdvancedUserInterface, \Serializable
+interface UserInterface extends BaseUserInterface, \Serializable
 {
     const ROLE_DEFAULT = 'ROLE_USER';
 

@@ -79,7 +79,7 @@ class UserManipulator
         $this->userManager->updateUser($user);
 
         $event = new UserEvent($user, $this->getRequest());
-        $this->dispatcher->dispatch(FOSUserEvents::USER_CREATED, $event);
+        $this->dispatcher->dispatch($event, FOSUserEvents::USER_CREATED);
 
         return $user;
     }
@@ -96,7 +96,7 @@ class UserManipulator
         $this->userManager->updateUser($user);
 
         $event = new UserEvent($user, $this->getRequest());
-        $this->dispatcher->dispatch(FOSUserEvents::USER_ACTIVATED, $event);
+        $this->dispatcher->dispatch($event, FOSUserEvents::USER_ACTIVATED);
     }
 
     /**
@@ -111,7 +111,7 @@ class UserManipulator
         $this->userManager->updateUser($user);
 
         $event = new UserEvent($user, $this->getRequest());
-        $this->dispatcher->dispatch(FOSUserEvents::USER_DEACTIVATED, $event);
+        $this->dispatcher->dispatch($event, FOSUserEvents::USER_DEACTIVATED);
     }
 
     /**
@@ -127,7 +127,7 @@ class UserManipulator
         $this->userManager->updateUser($user);
 
         $event = new UserEvent($user, $this->getRequest());
-        $this->dispatcher->dispatch(FOSUserEvents::USER_PASSWORD_CHANGED, $event);
+        $this->dispatcher->dispatch($event, FOSUserEvents::USER_PASSWORD_CHANGED);
     }
 
     /**
@@ -142,7 +142,7 @@ class UserManipulator
         $this->userManager->updateUser($user);
 
         $event = new UserEvent($user, $this->getRequest());
-        $this->dispatcher->dispatch(FOSUserEvents::USER_PROMOTED, $event);
+        $this->dispatcher->dispatch($event, FOSUserEvents::USER_PROMOTED);
     }
 
     /**
@@ -157,7 +157,7 @@ class UserManipulator
         $this->userManager->updateUser($user);
 
         $event = new UserEvent($user, $this->getRequest());
-        $this->dispatcher->dispatch(FOSUserEvents::USER_DEMOTED, $event);
+        $this->dispatcher->dispatch($event, FOSUserEvents::USER_DEMOTED);
     }
 
     /**
