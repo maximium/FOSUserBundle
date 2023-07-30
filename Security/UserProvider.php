@@ -92,4 +92,12 @@ class UserProvider implements UserProviderInterface
     {
         return $this->userManager->findUserByUsername($username);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUserByIdentifier(string $username): UserInterface
+    {
+        return $this->loadUserByUsername($username);
+    }
 }
