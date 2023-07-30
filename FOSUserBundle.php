@@ -37,7 +37,6 @@ class FOSUserBundle extends Bundle
         $container->addCompilerPass(new ValidationPass());
         $container->addCompilerPass(new InjectUserCheckerPass());
         $container->addCompilerPass(new InjectRememberMeServicesPass());
-        $container->addCompilerPass(new CheckForSessionPass());
         $container->addCompilerPass(new CheckForMailerPass());
 
         $this->addRegisterMappingsPass($container);
