@@ -16,7 +16,7 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 class LastLoginListener implements EventSubscriberInterface
@@ -40,7 +40,7 @@ class LastLoginListener implements EventSubscriberInterface
     {
         return array(
             FOSUserEvents::SECURITY_IMPLICIT_LOGIN => 'onImplicitLogin',
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            LoginSuccessEvent::class => 'onSecurityInteractiveLogin',
         );
     }
 
@@ -56,11 +56,11 @@ class LastLoginListener implements EventSubscriberInterface
     }
 
     /**
-     * @param InteractiveLoginEvent $event
+     * @param LoginSuccessEvent $event
      */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public function onSecurityInteractiveLogin(LoginSuccessEvent $event)
     {
-        $user = $event->getAuthenticationToken()->getUser();
+        $user = $event->getAuthenticatedToken()->getUser();
 
         if ($user instanceof UserInterface) {
             $user->setLastLogin(new \DateTime());

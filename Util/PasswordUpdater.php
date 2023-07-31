@@ -37,7 +37,7 @@ class PasswordUpdater implements PasswordUpdaterInterface
             return;
         }
 
-        if ($encoder instanceof LegacyPasswordAuthenticatedUserInterface) {
+        if ($user instanceof LegacyPasswordAuthenticatedUserInterface) {
             $salt = rtrim(str_replace('+', '.', base64_encode(random_bytes(32))), '=');
             $user->setSalt($salt);
         } else {
