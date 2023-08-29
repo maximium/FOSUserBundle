@@ -14,6 +14,9 @@ namespace FOS\UserBundle\Mailer;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
+use Symfony\Component\Mailer\MailerInterface as SymfonyMailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 /**
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
@@ -21,7 +24,7 @@ use Twig\Environment;
 class Mailer implements MailerInterface
 {
     /**
-     * @var \Swift_Mailer
+     * @var SymfonyMailerInterface
      */
     protected $mailer;
 
@@ -43,12 +46,12 @@ class Mailer implements MailerInterface
     /**
      * Mailer constructor.
      *
-     * @param \Swift_Mailer         $mailer
+     * @param SymfonyMailerInterface       $mailer
      * @param UrlGeneratorInterface $router
      * @param Environment           $templating
      * @param array                 $parameters
      */
-    public function __construct($mailer, UrlGeneratorInterface  $router, Environment $templating, array $parameters)
+    public function __construct(SymfonyMailerInterface $mailer, UrlGeneratorInterface  $router, Environment $templating, array $parameters)
     {
         $this->mailer = $mailer;
         $this->router = $router;
@@ -96,11 +99,14 @@ class Mailer implements MailerInterface
         $subject = array_shift($renderedLines);
         $body = implode("\n", $renderedLines);
 
-        $message = (new \Swift_Message())
-            ->setSubject($subject)
-            ->setFrom($fromEmail)
-            ->setTo($toEmail)
-            ->setBody($body);
+        $message = (new Email())
+            ->subject($subject)
+            ->to($toEmail)
+            ->text($body);
+
+        foreach ($fromEmail as $address => $name) {
+            $message->from(new Address($address, $name));
+        }
 
         $this->mailer->send($message);
     }

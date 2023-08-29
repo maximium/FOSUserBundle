@@ -37,11 +37,11 @@ class CheckForMailerPass implements CompilerPassInterface
             return;
         }
 
-        if ($container->findDefinition('fos_user.mailer')->hasTag('fos_user.requires_swift')) {
+        if ($container->findDefinition('fos_user.mailer')->hasTag('fos_user.requires_mailer')) {
             $message = 'A feature you activated in FOSUserBundle requires the "mailer" service to be available.';
 
             if (class_exists(Recipe::class)) {
-                $message .= ' Run "composer require swiftmailer-bundle" to install SwiftMailer or configure a different mailer in "config/packages/fos_user.yaml".';
+                $message .= ' Run "composer require mailer" to install Symfony mailer or configure a different mailer in "config/packages/fos_user.yaml".';
             }
 
             throw new \LogicException($message);

@@ -13,14 +13,17 @@ namespace FOS\UserBundle\Mailer;
 
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Mailer\MailerInterface as SymfonyMailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 /**
  * @author Christophe Coevoet <stof@notk.org>
  */
-class TwigSwiftMailer implements MailerInterface
+class TwigMailer implements MailerInterface
 {
     /**
-     * @var \Swift_Mailer
+     * @var SymfonyMailerInterface
      */
     protected $mailer;
 
@@ -40,14 +43,14 @@ class TwigSwiftMailer implements MailerInterface
     protected $parameters;
 
     /**
-     * TwigSwiftMailer constructor.
+     * TwigMailer constructor.
      *
-     * @param \Swift_Mailer         $mailer
+     * @param SymfonyMailerInterface         $mailer
      * @param UrlGeneratorInterface $router
      * @param \Twig_Environment     $twig
      * @param array                 $parameters
      */
-    public function __construct(\Swift_Mailer $mailer, UrlGeneratorInterface $router, \Twig_Environment $twig, array $parameters)
+    public function __construct(SymfonyMailerInterface $mailer, UrlGeneratorInterface $router, \Twig_Environment $twig, array $parameters)
     {
         $this->mailer = $mailer;
         $this->router = $router;
@@ -105,16 +108,19 @@ class TwigSwiftMailer implements MailerInterface
             $htmlBody = $template->renderBlock('body_html', $context);
         }
 
-        $message = (new \Swift_Message())
-            ->setSubject($subject)
-            ->setFrom($fromEmail)
-            ->setTo($toEmail);
+        $message = (new Email())
+            ->subject($subject)
+            ->to($toEmail);
+
+        foreach ($fromEmail as $address => $name) {
+            $message->from(new Address($address, $name));
+        }
 
         if (!empty($htmlBody)) {
-            $message->setBody($htmlBody, 'text/html')
-                ->addPart($textBody, 'text/plain');
+            $message->html($htmlBody)
+                ->text($textBody);
         } else {
-            $message->setBody($textBody);
+            $message->text($textBody);
         }
 
         $this->mailer->send($message);
