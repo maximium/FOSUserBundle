@@ -12,12 +12,13 @@
 namespace FOS\UserBundle\Model;
 
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface UserInterface extends BaseUserInterface, \Serializable
+interface UserInterface extends BaseUserInterface, \Serializable, PasswordAuthenticatedUserInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
 
